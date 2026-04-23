@@ -5,12 +5,12 @@ import { Heart, MessageCircle, Share2, Music } from "lucide-react";
 
 function PlaylistCard() {
   return (
-    <div className="relative rounded-2xl overflow-hidden border border-purple-500/20 bg-white/5 backdrop-blur-sm p-5 w-full max-w-sm">
+    <div className="relative rounded-2xl overflow-hidden border border-[#1877F2]/20 bg-white/5 backdrop-blur-sm p-5 w-full max-w-sm">
       {/* gradient glow border */}
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-600/10 via-transparent to-purple-900/10 pointer-events-none" />
+      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-[#1877F2]/10 via-transparent to-[#0D47A1]/10 pointer-events-none" />
 
       {/* Cover art placeholder */}
-      <div className="w-full aspect-square rounded-xl bg-gradient-to-br from-purple-700 via-purple-500 to-violet-800 mb-4 flex items-center justify-center">
+      <div className="w-full aspect-square rounded-xl bg-gradient-to-br from-[#1565C0] via-[#1877F2] to-[#0D47A1] mb-4 flex items-center justify-center">
         <Music className="w-16 h-16 text-white/30" />
       </div>
 
@@ -19,21 +19,22 @@ function PlaylistCard() {
         <div>
           <p className="font-bold text-white text-lg leading-tight">Chill Night</p>
           <p className="text-white/40 text-sm mt-0.5">by @mira · 12 songs</p>
+
         </div>
-        <span className="text-xs bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-full px-2 py-0.5 font-medium mt-1">
+        <span className="text-xs bg-[#1877F2]/20 text-[#60A5FA] border border-[#1877F2]/30 rounded-full px-2 py-0.5 font-medium mt-1">
           Playlist
         </span>
       </div>
 
       {/* Actions */}
       <div className="flex items-center gap-5 mt-4 text-white/40">
-        <button className="flex items-center gap-1.5 hover:text-purple-400 transition-colors text-sm">
+        <button className="flex items-center gap-1.5 hover:text-[#1877F2] transition-colors text-sm">
           <Heart className="w-4 h-4" /> 148
         </button>
-        <button className="flex items-center gap-1.5 hover:text-purple-400 transition-colors text-sm">
+        <button className="flex items-center gap-1.5 hover:text-[#1877F2] transition-colors text-sm">
           <MessageCircle className="w-4 h-4" /> 23
         </button>
-        <button className="flex items-center gap-1.5 hover:text-purple-400 transition-colors text-sm ml-auto">
+        <button className="flex items-center gap-1.5 hover:text-[#1877F2] transition-colors text-sm ml-auto">
           <Share2 className="w-4 h-4" />
         </button>
       </div>
@@ -54,14 +55,14 @@ export default function Feed() {
           viewport={{ once: true }}
         >
           <h2 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight mb-6">
-            Your feed, but{" "}
-            <span className="text-purple-400">for music.</span>
+            Your feed, but for{" "}
+            <span className="text-[#1877F2]">sharing music.</span>
           </h2>
           <p className="text-lg text-white/50 leading-relaxed">
-            See playlists and songs from people you follow — blended with
-            trending picks from across Tunedrop. An{" "}
-            <span className="text-white/80">80/20 mix</span> so your feed is
-            never empty, even when you&apos;re just getting started.
+            See playlists and songs from people you follow, blended with
+            trending picks from across Tunedrop.{" "}
+            <span className="text-white/80">Dynamic Feed</span> keeps it fresh
+            so you always have something new to discover.
           </p>
         </motion.div>
 

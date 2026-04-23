@@ -1,42 +1,49 @@
 "use client";
 
 import { motion } from "framer-motion";
-import EmailCapture from "@/components/ui/EmailCapture";
+import { SparklesCore } from "@/components/ui/sparkles";
 
-function XIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.747l7.73-8.835L1.254 2.25H8.08l4.259 5.63 5.905-5.63zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-
-function GithubIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844a9.59 9.59 0 012.504.337c1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.02 10.02 0 0022 12.017C22 6.484 17.522 2 12 2z" />
-    </svg>
-  );
-}
 
 export default function FinalCTA() {
   return (
     <section className="py-32 px-6 md:px-12">
       {/* CTA block */}
       <motion.div
-        className="max-w-3xl mx-auto flex flex-col items-center text-center gap-8"
+        className="max-w-3xl mx-auto flex flex-col items-center text-center"
         initial={{ opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease: "easeOut" }}
         viewport={{ once: true }}
       >
-        <h2 className="text-6xl md:text-8xl font-extrabold tracking-tight text-white">
+        <h2 className="text-6xl md:text-8xl font-extrabold tracking-tight text-white relative z-20">
           Drop in.
         </h2>
-        <p className="text-lg text-white/50">
-          Be first to know when Tunedrop opens.
-        </p>
-        <EmailCapture />
+
+        {/* Sparkles strip with subtext overlaid */}
+        <div className="w-[40rem] max-w-full h-40 relative mt-8">
+          {/* Gradient lines */}
+          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-[#1877F2] to-transparent h-[2px] w-3/4 blur-sm" />
+          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-[#1877F2] to-transparent h-px w-3/4" />
+          <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-[#60A5FA] to-transparent h-[5px] w-1/4 blur-sm" />
+          <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-[#60A5FA] to-transparent h-px w-1/4" />
+
+          <SparklesCore
+            background="transparent"
+            minSize={0.4}
+            maxSize={1}
+            particleDensity={1200}
+            className="w-full h-full"
+            particleColor="#FFFFFF"
+          />
+
+          {/* Radial mask to feather edges */}
+          <div className="absolute inset-0 w-full h-full [mask-image:radial-gradient(350px_200px_at_top,transparent_20%,white)]" />
+
+          {/* Subtext sitting on top of the stars */}
+          <p className="absolute inset-0 flex items-center justify-center text-2xl md:text-3xl font-semibold text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.9)] z-20 pointer-events-none">
+            Coming soon to tunedrop.org.
+          </p>
+        </div>
       </motion.div>
 
       {/* Divider */}
@@ -45,26 +52,6 @@ export default function FinalCTA() {
       {/* Footer */}
       <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 pt-8 text-white/30 text-sm">
         <span>© 2026 Tunedrop</span>
-        <div className="flex items-center gap-5">
-          <a
-            href="https://twitter.com/tunedrop"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-purple-400 transition-colors"
-            aria-label="Tunedrop on Twitter"
-          >
-            <XIcon className="w-5 h-5" />
-          </a>
-          <a
-            href="https://github.com/tunedrop"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-purple-400 transition-colors"
-            aria-label="Tunedrop on GitHub"
-          >
-            <GithubIcon className="w-5 h-5" />
-          </a>
-        </div>
       </div>
     </section>
   );

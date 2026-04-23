@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Color, Scene, Object3D } from "three";
+import { Color, Object3D, Sphere, Vector3, Mesh } from "three";
 import ThreeGlobe from "three-globe";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
@@ -70,6 +70,7 @@ export function genRandomNumbers(min: number, max: number, count: number) {
 function GlobeObject({ globeConfig, data }: WorldProps) {
   const globeRef = useRef<ThreeGlobe | null>(null);
   const [isReady, setIsReady] = useState(false);
+  const patchFrames = useRef(0);
   useThree(); // ensure context is available
 
   const defaults = {
@@ -141,36 +142,49 @@ function GlobeObject({ globeConfig, data }: WorldProps) {
 
     globe
       .ringsData([])
-      .ringColor(() => (t: number) => `rgba(168,85,247,${1 - t})`)
+      .ringColor(() => (t: number) => `rgba(24,119,242,${Math.max(0, 1 - t)})`)
       .ringMaxRadius(defaults.maxRings)
-      .ringPropagationSpeed(3)
+      .ringPropagationSpeed(5)
       .ringRepeatPeriod((defaults.arcTime * defaults.arcLength) / defaults.rings);
 
-    // Disable frustum culling on all children so Three.js never calls
-    // computeBoundingSphere() on hex polygon geometry that isn't ready yet.
-    globe.traverse((obj: Object3D) => {
-      obj.frustumCulled = false;
-    });
-
-    // Defer mount by two frames — gives three-globe time to finish filling
-    // its internal BufferGeometry position attributes from the GeoJSON data.
-    const raf1 = requestAnimationFrame(() => {
-      const raf2 = requestAnimationFrame(() => {
-        globe.traverse((obj: Object3D) => {
-          obj.frustumCulled = false;
-        });
-        setIsReady(true);
-      });
-      return raf2;
-    });
-
-    return () => cancelAnimationFrame(raf1);
+    setIsReady(true);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Spawn rings at random arc endpoints on an interval
+  useEffect(() => {
+    if (!data.length) return;
+    const interval = setInterval(() => {
+      if (!globeRef.current) return;
+      const indices = genRandomNumbers(0, data.length, Math.floor((data.length * 4) / 5));
+      globeRef.current.ringsData(
+        data
+          .filter((_, i) => indices.includes(i))
+          .map((d) => ({ lat: d.startLat, lng: d.startLng }))
+      );
+    }, 2000);
+    return () => clearInterval(interval);
+  }, [data]);
+
   useFrame(() => {
-    if (globeRef.current) {
-      globeRef.current.rotation.y += 0.0015;
+    if (!globeRef.current) return;
+
+    globeRef.current.rotation.y += 0.0015;
+
+    // three-globe creates child meshes asynchronously as it processes GeoJSON.
+    // For the first 60 frames, patch every new child that appears:
+    // - frustumCulled=false prevents the frustum check path
+    // - pre-setting boundingSphere prevents computeBoundingSphere() being called
+    //   during depth-sort, which would hit empty position buffers and emit NaN.
+    if (patchFrames.current < 60) {
+      globeRef.current.traverse((obj: Object3D) => {
+        obj.frustumCulled = false;
+        const mesh = obj as Mesh;
+        if (mesh.isMesh && mesh.geometry && mesh.geometry.boundingSphere === null) {
+          mesh.geometry.boundingSphere = new Sphere(new Vector3(0, 0, 0), 200);
+        }
+      });
+      patchFrames.current += 1;
     }
   });
 
@@ -180,13 +194,16 @@ function GlobeObject({ globeConfig, data }: WorldProps) {
 
 export function World(props: WorldProps) {
   const { globeConfig } = props;
-  const scene = new Scene();
 
   return (
-    <Canvas scene={scene} camera={{ position: [0, 0, 2.5], fov: 50 }}>
+    <Canvas
+      camera={{ position: [0, 0, 210], fov: 50, near: 0.1, far: 1000 }}
+      gl={{ antialias: true, alpha: true }}
+      style={{ background: "transparent" }}
+    >
       <ambientLight
-        color={globeConfig.ambientLight ?? "#bbbbff"}
-        intensity={0.6}
+        color={globeConfig.ambientLight ?? "#bbccff"}
+        intensity={1.2}
       />
       <directionalLight
         color={globeConfig.directionalLeftLight ?? "#ffffff"}
@@ -199,14 +216,14 @@ export function World(props: WorldProps) {
       <pointLight
         color={globeConfig.pointLight ?? "#ffffff"}
         position={[-200, 500, 200]}
-        intensity={0.8}
+        intensity={2.0}
       />
       <GlobeObject {...props} />
       <OrbitControls
         enablePan={false}
         enableZoom={false}
-        minDistance={1.2}
-        maxDistance={2.5}
+        minDistance={220}
+        maxDistance={500}
         autoRotate={globeConfig.autoRotate}
         autoRotateSpeed={globeConfig.autoRotateSpeed ?? 1}
       />

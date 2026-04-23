@@ -15,7 +15,7 @@ type PostCardProps = {
 function PostCard({ icon, label, title, sub, badge, delay = 0 }: PostCardProps) {
   return (
     <motion.div
-      className="flex items-center gap-4 rounded-2xl border border-purple-500/15 bg-white/[0.03] backdrop-blur-sm p-4 w-full"
+      className="flex items-center gap-4 rounded-2xl border border-[#1877F2]/15 bg-white/[0.03] backdrop-blur-sm p-4 w-full"
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.55, delay, ease: "easeOut" }}
@@ -23,17 +23,17 @@ function PostCard({ icon, label, title, sub, badge, delay = 0 }: PostCardProps) 
       viewport={{ once: true }}
     >
       {/* Thumbnail */}
-      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-purple-700/60 to-violet-900/60 flex items-center justify-center shrink-0">
-        <span className="text-purple-300">{icon}</span>
+      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#1565C0]/60 to-[#0D47A1]/60 flex items-center justify-center shrink-0">
+        <span className="text-[#60A5FA]">{icon}</span>
       </div>
 
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-0.5">
-          <span className="text-xs text-purple-400 font-medium uppercase tracking-widest">
+          <span className="text-xs text-[#1877F2] font-medium uppercase tracking-widest">
             {label}
           </span>
           {badge && (
-            <span className="text-[10px] bg-purple-500/20 text-purple-300 border border-purple-500/30 rounded-full px-1.5 py-0.5">
+            <span className="text-[10px] bg-[#1877F2]/20 text-[#60A5FA] border border-[#1877F2]/30 rounded-full px-1.5 py-0.5">
               {badge}
             </span>
           )}
@@ -59,11 +59,11 @@ export default function PostTypes() {
         >
           <h2 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight mb-6">
             Playlists. Songs.{" "}
-            <span className="text-purple-400">Vibes.</span>
+            <span className="text-[#1877F2]">Vibes.</span>
           </h2>
           <p className="text-lg text-white/50 leading-relaxed">
             Three ways to post. Share a full playlist, drop a single track with
-            a 30-second preview, or post an image — album art, your setup, a
+            a 30-second preview, or post an image: album art, your setup, a
             concert photo. Every post feels right at home in the feed.
           </p>
         </motion.div>
@@ -80,7 +80,7 @@ export default function PostTypes() {
           <PostCard
             icon={<Music className="w-6 h-6" />}
             label="Song"
-            title="Nuvole Bianche — Einaudi"
+            title="Nuvole Bianche"
             sub="3:55 · Ludovico Einaudi"
             badge="30s preview"
             delay={0.1}

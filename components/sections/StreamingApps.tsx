@@ -8,17 +8,39 @@ type Platform = {
   color: string;
   ring: string;
   label: string;
+  href: string;
 };
 
 const platforms: Platform[] = [
-  { name: "Spotify", color: "from-green-500 to-green-700", ring: "bg-green-500/30", label: "Open in Spotify" },
-  { name: "Apple Music", color: "from-pink-500 to-rose-700", ring: "bg-pink-500/30", label: "Open in Apple Music" },
-  { name: "YouTube Music", color: "from-red-500 to-red-700", ring: "bg-red-500/30", label: "Open in YouTube Music" },
+  {
+    name: "Spotify",
+    color: "from-green-500 to-green-700",
+    ring: "bg-green-500/30",
+    label: "Daft Punk on Spotify",
+    href: "https://open.spotify.com/artist/4tZwfgrHOc3mvqYlEYSvVi",
+  },
+  {
+    name: "Apple Music",
+    color: "from-pink-500 to-rose-700",
+    ring: "bg-pink-500/30",
+    label: "Daft Punk on Apple Music",
+    href: "https://music.apple.com/us/artist/daft-punk/5468295",
+  },
+  {
+    name: "YouTube Music",
+    color: "from-red-500 to-red-700",
+    ring: "bg-red-500/30",
+    label: "Daft Punk on YouTube Music",
+    href: "https://music.youtube.com/search?q=daft+punk",
+  },
 ];
 
 function PlatformPill({ platform }: { platform: Platform }) {
   return (
-    <motion.div
+    <motion.a
+      href={platform.href}
+      target="_blank"
+      rel="noopener noreferrer"
       className="relative flex items-center gap-3 px-5 py-3.5 rounded-2xl border border-white/10 bg-white/5 cursor-pointer group"
       whileHover={{ scale: 1.04 }}
       transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -41,10 +63,10 @@ function PlatformPill({ platform }: { platform: Platform }) {
       </div>
 
       {/* Arrow */}
-      <span className="ml-auto text-white/20 group-hover:text-purple-400 transition-colors text-lg">
+      <span className="ml-auto text-white/20 group-hover:text-[#1877F2] transition-colors text-lg">
         →
       </span>
-    </motion.div>
+    </motion.a>
   );
 }
 
@@ -62,7 +84,7 @@ export default function StreamingApps() {
         >
           <h2 className="text-4xl md:text-6xl font-extrabold leading-tight tracking-tight mb-6">
             One tap to your{" "}
-            <span className="text-purple-400">library.</span>
+            <span className="text-[#1877F2]">library.</span>
           </h2>
           <p className="text-lg text-white/50 leading-relaxed">
             Found something you love in the feed? One tap sends it straight to
