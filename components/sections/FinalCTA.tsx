@@ -22,10 +22,10 @@ export default function FinalCTA() {
         {/* Sparkles strip with subtext overlaid */}
         <div className="w-[40rem] max-w-full h-40 relative mt-8">
           {/* Gradient lines */}
-          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-[#1877F2] to-transparent h-[2px] w-3/4 blur-sm" />
-          <div className="absolute inset-x-20 top-0 bg-gradient-to-r from-transparent via-[#1877F2] to-transparent h-px w-3/4" />
-          <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-[#60A5FA] to-transparent h-[5px] w-1/4 blur-sm" />
-          <div className="absolute inset-x-60 top-0 bg-gradient-to-r from-transparent via-[#60A5FA] to-transparent h-px w-1/4" />
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bg-gradient-to-r from-transparent via-[#1877F2] to-transparent h-[2px] w-3/4 blur-sm" />
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bg-gradient-to-r from-transparent via-[#1877F2] to-transparent h-px w-3/4" />
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bg-gradient-to-r from-transparent via-[#60A5FA] to-transparent h-[5px] w-1/4 blur-sm" />
+          <div className="absolute left-1/2 -translate-x-1/2 top-0 bg-gradient-to-r from-transparent via-[#60A5FA] to-transparent h-px w-1/4" />
 
           <SparklesCore
             background="transparent"
