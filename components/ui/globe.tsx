@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { Color, Scene } from "three";
+import { Color, Scene, Object3D } from "three";
 import ThreeGlobe from "three-globe";
 import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
@@ -146,7 +146,25 @@ function GlobeObject({ globeConfig, data }: WorldProps) {
       .ringPropagationSpeed(3)
       .ringRepeatPeriod((defaults.arcTime * defaults.arcLength) / defaults.rings);
 
-    setIsReady(true);
+    // Disable frustum culling on all children so Three.js never calls
+    // computeBoundingSphere() on hex polygon geometry that isn't ready yet.
+    globe.traverse((obj: Object3D) => {
+      obj.frustumCulled = false;
+    });
+
+    // Defer mount by two frames — gives three-globe time to finish filling
+    // its internal BufferGeometry position attributes from the GeoJSON data.
+    const raf1 = requestAnimationFrame(() => {
+      const raf2 = requestAnimationFrame(() => {
+        globe.traverse((obj: Object3D) => {
+          obj.frustumCulled = false;
+        });
+        setIsReady(true);
+      });
+      return raf2;
+    });
+
+    return () => cancelAnimationFrame(raf1);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
