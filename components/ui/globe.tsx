@@ -197,7 +197,7 @@ export function World(props: WorldProps) {
 
   return (
     <Canvas
-      camera={{ position: [0, 0, 210], fov: 50, near: 0.1, far: 1000 }}
+      camera={{ position: [0, 0, 270], fov: 50, near: 0.1, far: 1000 }}
       gl={{ antialias: true, alpha: true }}
       style={{ background: "transparent" }}
     >
@@ -222,7 +222,7 @@ export function World(props: WorldProps) {
       <OrbitControls
         enablePan={false}
         enableZoom={false}
-        minDistance={220}
+        minDistance={280}
         maxDistance={500}
         autoRotate={globeConfig.autoRotate}
         autoRotateSpeed={globeConfig.autoRotateSpeed ?? 1}
