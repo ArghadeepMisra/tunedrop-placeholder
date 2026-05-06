@@ -1,6 +1,3 @@
-import { List, Music, Image as ImageIcon } from "lucide-react";
-import type { ReactNode } from "react";
-
 // Color tokens (synced with globals.css theme)
 export const colors = {
   brand: "#1877F2",
@@ -44,7 +41,7 @@ export const platforms: Platform[] = [
 
 // Post card data
 export type PostCardData = {
-  icon: ReactNode;
+  iconKey: string;
   label: string;
   title: string;
   sub: string;
@@ -54,14 +51,14 @@ export type PostCardData = {
 
 export const postCards: PostCardData[] = [
   {
-    icon: "List",
+    iconKey: "List",
     label: "Playlist",
     title: "Late Night Lo-fi",
     sub: "18 songs · 1h 12m",
     delay: 0,
   },
   {
-    icon: "Music",
+    iconKey: "Music",
     label: "Song",
     title: "Nuvole Bianche",
     sub: "3:55 · Ludovico Einaudi",
@@ -69,17 +66,10 @@ export const postCards: PostCardData[] = [
     delay: 0.1,
   },
   {
-    icon: "Image",
+    iconKey: "Image",
     label: "Image",
     title: "Current setup 🎧",
     sub: "4:3 · by @jordyn",
     delay: 0.2,
   },
 ];
-
-// Icon map for post cards (to avoid passing ReactNodes in data)
-export const postCardIcons: Record<string, ReactNode> = {
-  List: <List className="w-6 h-6" />,
-  Music: <Music className="w-6 h-6" />,
-  Image: <ImageIcon className="w-6 h-6" />,
-};

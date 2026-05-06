@@ -76,11 +76,13 @@ function useGlobePatch(globeRef: React.RefObject<ThreeGlobe | null>) {
   const patchFrames = useRef(0);
 
   useFrame(() => {
-    if (!globeRef.current) return;
-    globeRef.current.rotation.y += 0.0015;
+    const globe = globeRef.current;
+    if (!globe) return;
+    // Three.js objects are mutated imperatively in animation loops — intentional
+    globe.rotation.y += 0.0015;
 
     if (patchFrames.current < 60) {
-      globeRef.current.traverse((obj: Object3D) => {
+      globe.traverse((obj: Object3D) => {
         obj.frustumCulled = false;
         const mesh = obj as Mesh;
         if (mesh.isMesh && mesh.geometry && mesh.geometry.boundingSphere === null) {
@@ -136,10 +138,10 @@ function GlobeObject({ globeConfig, data }: WorldProps) {
   };
 
   useEffect(() => {
-    const globe = new ThreeGlobe();
-    globeRef.current = globe;
+    const g = new ThreeGlobe();
+    globeRef.current = g;
 
-    const mat = globe.globeMaterial() as unknown as {
+    const mat = g.globeMaterial() as unknown as {
       color: Color;
       emissive: Color;
       emissiveIntensity: number;
@@ -150,8 +152,7 @@ function GlobeObject({ globeConfig, data }: WorldProps) {
     mat.emissiveIntensity = defaults.emissiveIntensity;
     mat.shininess = defaults.shininess;
 
-    globe
-      .showAtmosphere(defaults.showAtmosphere)
+    g.showAtmosphere(defaults.showAtmosphere)
       .atmosphereColor(defaults.atmosphereColor)
       .atmosphereAltitude(defaults.atmosphereAltitude)
       .hexPolygonsData((countries as { features: object[] }).features)
@@ -163,8 +164,7 @@ function GlobeObject({ globeConfig, data }: WorldProps) {
 
     const p = (d: object) => d as Position;
 
-    globe
-      .arcsData(data)
+    g.arcsData(data)
       .arcStartLat((d: object) => p(d).startLat)
       .arcStartLng((d: object) => p(d).startLng)
       .arcEndLat((d: object) => p(d).endLat)
@@ -177,20 +177,20 @@ function GlobeObject({ globeConfig, data }: WorldProps) {
       .arcDashGap(15)
       .arcDashAnimateTime(() => defaults.arcTime);
 
-    globe
-      .pointsData(data)
+    g.pointsData(data)
       .pointColor((d: object) => p(d).color)
       .pointsMerge(true)
       .pointAltitude(0.07)
       .pointRadius(2);
 
-    globe
-      .ringsData([])
+    g.ringsData([])
       .ringColor(() => (t: number) => `rgba(24,119,242,${Math.max(0, 1 - t)})`)
       .ringMaxRadius(defaults.maxRings)
       .ringPropagationSpeed(5)
       .ringRepeatPeriod((defaults.arcTime * defaults.arcLength) / defaults.rings);
 
+    // Mark globe initialization complete; triggers render with <primitive>
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsReady(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -212,7 +212,10 @@ function GlobeObject({ globeConfig, data }: WorldProps) {
 
   useGlobePatch(globeRef);
 
+  // R3F <primitive> requires the Three.js object during render — unavoidable
+  // eslint-disable-next-line react-hooks/refs
   if (!isReady || !globeRef.current) return null;
+  // eslint-disable-next-line react-hooks/refs
   return <primitive object={globeRef.current} />;
 }
 

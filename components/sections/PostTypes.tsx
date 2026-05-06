@@ -1,10 +1,18 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { List, Music, Image as ImageIcon } from "lucide-react";
+import { type ReactNode } from "react";
 import Section from "@/components/ui/section";
 import SplitLayout from "@/components/ui/split-layout";
 import ScrollReveal from "@/components/ui/scroll-reveal";
-import { postCards, postCardIcons } from "@/lib/constants";
+import { postCards } from "@/lib/constants";
+
+const iconMap: Record<string, ReactNode> = {
+  List: <List className="w-6 h-6" />,
+  Music: <Music className="w-6 h-6" />,
+  Image: <ImageIcon className="w-6 h-6" />,
+};
 
 type PostCardProps = {
   iconKey: string;
@@ -27,7 +35,7 @@ function PostCard({ iconKey, label, title, sub, badge, delay = 0 }: PostCardProp
     >
       {/* Thumbnail */}
       <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-brand-dark/60 to-brand-darker/60 flex items-center justify-center shrink-0">
-        <span className="text-brand-light">{postCardIcons[iconKey]}</span>
+        <span className="text-brand-light">{iconMap[iconKey]}</span>
       </div>
 
       <div className="flex-1 min-w-0">
@@ -70,7 +78,7 @@ export default function PostTypes() {
             {postCards.map((card) => (
               <PostCard
                 key={card.title}
-                iconKey={card.icon as string}
+                iconKey={card.iconKey}
                 label={card.label}
                 title={card.title}
                 sub={card.sub}
