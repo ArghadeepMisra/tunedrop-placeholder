@@ -7,7 +7,7 @@ import FinalCTA from "@/components/sections/FinalCTA";
 
 export default function Home() {
   return (
-    <main className="bg-neutral-950 text-white">
+    <main className="bg-neutral-950 text-white w-full overflow-x-hidden">
       <Hero />
       <Feed />
       <PostTypes />
