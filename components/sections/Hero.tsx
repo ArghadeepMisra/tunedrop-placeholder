@@ -69,7 +69,7 @@ export default function Hero() {
           >
             <Link
               href="/articles"
-              className="relative inline-block px-8 py-4 rounded-full border border-brand/30 bg-white/5 backdrop-blur-sm text-white text-lg font-semibold overflow-hidden group hover:border-brand/50 hover:shadow-[0_0_40px_rgba(24,119,242,0.35)] hover:text-brand-light transition-all duration-300"
+              className="relative inline-block px-8 py-4 rounded-full border border-brand/30 bg-white/5 backdrop-blur-sm text-white text-lg font-semibold overflow-hidden group hover:border-brand/40 hover:shadow-[0_0_40px_rgba(24,119,242,0.26)] hover:text-brand-light transition-all duration-300"
             >
               {/* Animated ripple ring */}
               <span className="absolute inset-0 rounded-full border border-brand/40 opacity-0 group-hover:opacity-100 animate-ping-slow pointer-events-none" />
