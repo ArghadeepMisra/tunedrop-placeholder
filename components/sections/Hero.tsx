@@ -12,10 +12,10 @@ const World = dynamic(
 
 export default function Hero() {
   return (
-    <header className="relative min-h-screen flex flex-col overflow-hidden">
+    <header className="relative min-h-screen flex flex-col overflow-hidden bg-[#0a0a0a]">
       {/* Globe — full-bleed background */}
       <motion.div
-        className="absolute inset-0 z-0"
+        className="absolute inset-0 z-[1]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1.4, delay: 0.2 }}
@@ -26,14 +26,14 @@ export default function Hero() {
         </div>
 
         {/* Canvas */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 w-full h-full">
           <World globeConfig={globeConfig} data={arcData} />
         </div>
 
         {/* Left fade — protects text legibility */}
-        <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-neutral-950 via-neutral-950/80 to-transparent pointer-events-none" />
+        <div className="absolute inset-y-0 left-0 w-1/2 bg-gradient-to-r from-[#0a0a0a] via-[#0a0a0a]/80 to-transparent pointer-events-none" />
         {/* Bottom fade */}
-        <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-neutral-950 to-transparent pointer-events-none" />
+        <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-[#0a0a0a] to-transparent pointer-events-none" />
       </motion.div>
 
       {/* Nav */}
