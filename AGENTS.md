@@ -15,7 +15,7 @@ npm run lint      # eslint (flat config via eslint.config.mjs)
 No test runner is configured.
 
 ## Tailwind v4 Quirk
-Styles and design tokens live entirely in `app/globals.css` using `@import "tailwindcss"` and `@theme inline`. Do not create a `tailwind.config.js`.
+Styles and design tokens live entirely in `app/globals.css` using `@import "tailwindcss" and `@theme inline`. Do not create a `tailwind.config.js`.
 
 Brand colors are registered in the theme:
 - `brand` → `#1877F2`
@@ -32,27 +32,39 @@ Brand colors are registered in the theme:
 ## Repo Layout
 ```
 app/
-  page.tsx          # composes 6 section components
-  layout.tsx        # metadata + OG tags + viewport (tunedrop.org)
-  globals.css       # Tailwind v4 tokens + base styles
+  page.tsx              # composes 6 section components
+  layout.tsx            # metadata + OG tags + viewport (tunedrop.org)
+  globals.css           # Tailwind v4 tokens + base styles
+  articles/
+    page.tsx            # Articles listing page (paginated, placeholder)
+    [slug]/
+      page.tsx          # Individual article page (dynamic route)
 components/
-  sections/         # Hero, Feed, PostTypes, Sharing, StreamingApps, FinalCTA
+  sections/             # Hero, Feed, PostTypes, Sharing, StreamingApps, FinalCTA
   ui/
-    globe.tsx       # R3F globe (client-only)
+    globe.tsx           # R3F globe (client-only)
     scroll-reveal.tsx   # Reusable Framer Motion scroll animation wrapper
     section.tsx         # Standard section wrapper (py-16 px-6 md:px-12 max-w-6xl)
     split-layout.tsx    # Two-column flex wrapper (optionally reversed)
 data/
-  globe.json        # GeoJSON country polygons for the globe
+  globe.json            # GeoJSON country polygons for the globe
 lib/
-  globe-data.ts     # Globe config + arc data (extracted from Hero.tsx)
-  constants.ts      # Platforms data, post card data, shared color constants
+  globe-data.ts         # Globe config + arc data (extracted from Hero.tsx)
+  constants.ts          # Platforms data, post card data, shared color constants
+  articles.ts           # Article type definitions, mock data, helper functions
 ```
 
 ## Patterns
 - Sections use `Section` + `SplitLayout` + `ScrollReveal` wrappers. Don't inline Framer Motion boilerplate.
 - Hardcoded data lives in `lib/`, not inside components.
 - Hero is wrapped in `<header>`, not `<section>`. Other sections use `<Section>`.
+
+## Articles / Blog Architecture
+- Data source: `lib/articles.ts` exports `Article` interface + `getAllArticles()` / `getArticleBySlug()`.
+- Listing: `app/articles/page.tsx` renders cards with tags, date, read time. Pagination UI scaffold is present but not wired.
+- Detail: `app/articles/[slug]/page.tsx` is a dynamic server route with `generateMetadata`.
+- Navigation: articles pages have a contextual back link (not a sitewide nav). Home uses `<header>`, articles pages define their own minimal header.
+- Styling: article cards reuse the site glass-morphism pattern (`bg-white/5 backdrop-blur-sm border-white/10`).
 
 ## Deployment
 - Vercel (`vercel.json` present). Pushes to `main` deploy to production.

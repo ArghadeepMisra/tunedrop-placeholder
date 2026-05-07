@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import dynamic from "next/dynamic";
 import { motion } from "framer-motion";
 import { globeConfig, arcData } from "@/lib/globe-data";
@@ -59,6 +60,26 @@ export default function Hero() {
           <p className="text-lg md:text-xl text-white/60 leading-relaxed">
             A social feed for music only.
           </p>
+
+          {/* CTA Button */}
+          <motion.div
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.98 }}
+            className="inline-block"
+          >
+            <Link
+              href="/articles"
+              className="relative inline-flex items-center gap-3 px-8 py-4 rounded-full border border-brand/30 bg-white/5 backdrop-blur-sm text-white text-lg font-semibold overflow-hidden group hover:border-brand/50 hover:shadow-[0_0_40px_rgba(24,119,242,0.35)] hover:text-brand-light transition-all duration-300"
+            >
+              {/* Animated ripple ring */}
+              <span className="absolute inset-0 rounded-full border border-brand/40 opacity-0 group-hover:opacity-100 animate-ping-slow" />
+
+              <span className="relative">Read Articles Till Release</span>
+              <span className="relative text-white/40 group-hover:text-brand-light transition-colors">
+                →
+              </span>
+            </Link>
+          </motion.div>
         </motion.div>
       </div>
     </header>
