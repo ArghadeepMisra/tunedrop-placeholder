@@ -40,10 +40,33 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# claude code
+# Agentic / AI files
 .claude/
 CLAUDE.md
+AGENTS.md
+.cursor/
+.cursorrules
+.codex/
+.aider/
+.aider.chat.history.md
+.specstory/
+.augment/
+.agents/
+.opencode/
+.amp/
+.history/
+state.json
+.runtime/
+.logs/
 
+# AI agent infrastructure (skills, docs, references)
+agents/
+skills/
+docs/
+references/
+rules.md
+workflow_cache.md
+temp/
 
 # Beads / Dolt files (added by bd init)
 .dolt/

@@ -17,9 +17,9 @@ export default function SplitLayout({
   const second = reverse ? left : right;
 
   return (
-    <div className={`grid grid-cols-1 md:grid-cols-[4fr_8fr] items-center gap-8 ${className}`}>
-      <div className={`${reverse ? "w-full" : "max-w-xl"}`}>{first}</div>
-      <div className={`${reverse ? "max-w-xl" : "w-full"}`}>{second}</div>
+    <div className={`grid grid-cols-1 md:grid-cols-2 items-center gap-12 ${className}`}>
+      <div className="flex flex-col items-center text-center md:text-left md:items-start">{first}</div>
+      <div className="flex flex-col items-center">{second}</div>
     </div>
   );
 }
