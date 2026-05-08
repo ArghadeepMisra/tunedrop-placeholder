@@ -10,6 +10,11 @@ const World = dynamic(
   { ssr: false }
 );
 
+const GLOBE_TRANSITION = { duration: 0.5, delay: 0.05 };
+const TEXT_TRANSITION = { duration: 0.25, ease: "easeOut" as const };
+const CTA_HOVER = { scale: 1.04 };
+const CTA_TAP = { scale: 0.98 };
+
 export default function Hero() {
   return (
     <header className="relative min-h-screen flex flex-col overflow-hidden bg-[#0a0a0a]">
@@ -18,7 +23,7 @@ export default function Hero() {
         className="absolute inset-0 z-[1]"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1.4, delay: 0.2 }}
+        transition={GLOBE_TRANSITION}
       >
         {/* Glow */}
         <div className="absolute inset-0 flex items-center justify-end pr-0 pointer-events-none">
@@ -49,11 +54,11 @@ export default function Hero() {
           className="flex flex-col gap-6 max-w-xl"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
+          transition={TEXT_TRANSITION}
         >
           <h1 className="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
             Share the music{" "}
-            <span className="text-brand drop-shadow-[0_0_32px_rgba(24,119,242,0.6)] hover:drop-shadow-[0_0_48px_rgba(24,119,242,0.9)] transition-all duration-500 cursor-default">
+            <span className="text-brand drop-shadow-[0_0_32px_rgba(24,119,242,0.6)] hover:drop-shadow-[0_0_48px_rgba(24,119,242,0.9)] transition-all duration-150 cursor-default">
               you want the world to listen.
             </span>
           </h1>
@@ -63,16 +68,16 @@ export default function Hero() {
 
           {/* CTA Button */}
           <motion.div
-            whileHover={{ scale: 1.04 }}
-            whileTap={{ scale: 0.98 }}
+            whileHover={CTA_HOVER}
+            whileTap={CTA_TAP}
             className="inline-block"
           >
             <Link
               href="/articles"
-              className="relative inline-block px-8 py-4 rounded-full border border-brand/30 bg-white/5 backdrop-blur-sm text-white text-lg font-semibold overflow-hidden group hover:border-brand/40 hover:shadow-[0_0_40px_rgba(24,119,242,0.26)] hover:text-brand-light transition-all duration-300"
+              className="relative inline-block px-8 py-4 rounded-2xl border border-brand/30 bg-white/5 backdrop-blur-sm text-white text-lg font-semibold overflow-hidden group hover:border-brand/40 hover:shadow-[0_0_40px_rgba(24,119,242,0.26)] hover:text-brand-light transition-all duration-150"
             >
               {/* Animated ripple ring */}
-              <span className="absolute inset-0 rounded-full border border-brand/40 opacity-0 group-hover:opacity-100 animate-ping-slow pointer-events-none" />
+              <span className="absolute inset-0 rounded-2xl border border-brand/40 opacity-0 group-hover:opacity-100 animate-ping-slow pointer-events-none" />
 
               <span className="relative">Read Articles Till Release</span>
             </Link>

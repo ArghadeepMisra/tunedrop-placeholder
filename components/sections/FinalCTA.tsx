@@ -1,17 +1,18 @@
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useState } from "react";
 import { SparklesCore } from "@/components/ui/sparkles";
 import Section from "@/components/ui/section";
 import ScrollReveal from "@/components/ui/scroll-reveal";
 
 export default function FinalCTA() {
-  // Reduce sparkles density on mobile for performance
-  const particleDensity = useMemo(() => {
-    if (typeof window !== "undefined" && window.innerWidth < 768) {
-      return 600;
-    }
-    return 1200;
+  const [particleDensity, setParticleDensity] = useState(1200);
+
+  useEffect(() => {
+    const update = () => setParticleDensity(window.innerWidth < 768 ? 600 : 1200);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
   }, []);
 
   return (
