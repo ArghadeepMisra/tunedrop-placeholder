@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   // CSP is a production security control. Skip in dev to allow eval()
   // which React uses for Fast Refresh and debugging callstacks.
   if (process.env.NODE_ENV === "development") {
