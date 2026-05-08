@@ -1,32 +1,39 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function PageLoader() {
-  const [loading, setLoading] = useState(true);
+  const [dismissed, setDismissed] = useState(false);
+  const [exiting, setExiting] = useState(false);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   useEffect(() => {
-    const dismiss = () => setLoading(false);
+    const dismiss = () => {
+      setExiting(true);
+    };
 
-    // Safety timeout — always dismiss after 3s even if load never fires
-    const safety = setTimeout(dismiss, 3000);
+    // Safety timeout — always dismiss after 4s
+    timerRef.current = setTimeout(dismiss, 4000);
 
     if (document.readyState === "complete") {
-      // Page already loaded — brief delay for paint
-      setTimeout(dismiss, 200);
-      return () => clearTimeout(safety);
+      setTimeout(dismiss, 300);
+      return () => clearTimeout(timerRef.current);
     }
 
-    window.addEventListener("load", () => setTimeout(dismiss, 200));
-    return () => {
-      clearTimeout(safety);
-    };
+    window.addEventListener("load", () => setTimeout(dismiss, 300));
+
+    return () => clearTimeout(timerRef.current);
   }, []);
 
-  if (!loading) return null;
+  if (dismissed) return null;
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-neutral-950">
+    <div
+      className={`fixed inset-0 z-[9999] flex items-center justify-center bg-neutral-950 transition-opacity duration-500 ${exiting ? "opacity-0 pointer-events-none" : "opacity-100"}`}
+      onTransitionEnd={() => {
+        if (exiting) setDismissed(true);
+      }}
+    >
       <div className="flex flex-col items-center gap-6">
         <span className="text-4xl md:text-5xl font-extrabold tracking-tight text-white">
           Tunedrop
