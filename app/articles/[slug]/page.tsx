@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import DOMPurify from "isomorphic-dompurify";
 import { getArticleBySlug } from "@/lib/articles";
+import Footer from "@/components/ui/footer";
 
 interface ArticlePageProps {
   params: Promise<{ slug: string }>;
@@ -14,7 +16,7 @@ export async function generateMetadata({
   const article = await getArticleBySlug(slug);
 
   if (!article) {
-    return { title: "Article | Tunedrop" };
+    return { title: "Coming Soon | Tunedrop" };
   }
 
   return {
@@ -66,9 +68,16 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </div>
 
             <div className="prose prose-invert prose-lg max-w-none">
-              <p className="text-white/60 leading-relaxed text-lg">
-                {article.content}
-              </p>
+              {article.content.trimStart().startsWith("<") ? (
+                <div dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(article.content, {
+                  ALLOWED_TAGS: ["p", "strong", "em", "a", "ul", "ol", "li", "blockquote", "h1", "h2", "h3", "h4", "pre", "code", "br", "hr", "img"],
+                  ALLOWED_ATTR: ["href", "src", "alt", "title", "target", "rel"],
+                }) }} />
+              ) : (
+                <p className="text-white/60 leading-relaxed text-lg">
+                  {article.content}
+                </p>
+              )}
             </div>
           </>
         ) : (
@@ -90,14 +99,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
         )}
       </div>
 
-      <div className="border-t border-white/10 px-6 md:px-12 py-8">
-        <div className="max-w-6xl mx-auto flex items-center justify-between text-white/30 text-sm">
-          <span>© 2026 Tunedrop</span>
-          <Link href="/" className="hover:text-brand transition-colors">
-            tunedrop.org
-          </Link>
-        </div>
-      </div>
+      <Footer />
     </main>
   );
 }
