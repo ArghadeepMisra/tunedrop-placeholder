@@ -13,16 +13,13 @@ export default function SplitLayout({
   reverse = false,
   className = "",
 }: SplitLayoutProps) {
-  const orderClass = reverse
-    ? "flex-col md:flex-row-reverse"
-    : "flex-col md:flex-row";
+  const first = reverse ? right : left;
+  const second = reverse ? left : right;
 
   return (
-    <div
-      className={`flex ${orderClass} items-center gap-16 ${className}`}
-    >
-      <div className="flex-1 max-w-xl">{left}</div>
-      <div className="flex-1 flex justify-center">{right}</div>
+    <div className={`grid grid-cols-1 md:grid-cols-[4fr_8fr] items-center gap-8 ${className}`}>
+      <div className={`${reverse ? "w-full" : "max-w-xl"}`}>{first}</div>
+      <div className={`${reverse ? "max-w-xl" : "w-full"}`}>{second}</div>
     </div>
   );
 }

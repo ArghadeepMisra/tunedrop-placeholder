@@ -1,10 +1,10 @@
 "use client";
 
+import { useMemo, type ReactNode } from "react";
 import { motion, type Transition, type Variant } from "framer-motion";
-import { type ReactNode } from "react";
 
 const defaultTransition: Transition = {
-  duration: 0.6,
+  duration: 0.25,
   ease: "easeOut",
 };
 
@@ -46,11 +46,14 @@ export default function ScrollReveal({
   className = "",
   once = true,
 }: ScrollRevealProps) {
-  const transition: Transition = {
-    ...defaultTransition,
-    ...(duration !== undefined && { duration }),
-    delay,
-  };
+  const transition: Transition = useMemo(
+    () => ({
+      ...defaultTransition,
+      ...(duration !== undefined && { duration }),
+      delay,
+    }),
+    [duration, delay]
+  );
 
   return (
     <motion.div

@@ -4,52 +4,48 @@ export interface Article {
   excerpt: string;
   content: string;
   publishedAt: string;
+  formattedDate: string;
   author: string;
-  readTime: number; // minutes
+  readTime: number;
   tags: string[];
   coverImage?: string;
 }
 
-export const articles: Article[] = [
-  {
-    slug: "building-the-perfect-playlist",
-    title: "Building the Perfect Playlist",
-    excerpt:
-      "A deep dive into the art and science of curating playlists that tell a story and keep listeners hooked from start to finish.",
-    content: "Placeholder content for building the perfect playlist.",
-    publishedAt: "2026-04-15",
-    author: "Tunedrop Team",
-    readTime: 6,
-    tags: ["Playlists", "Curation", "Tips"],
-  },
-  {
-    slug: "how-social-discovery-changed-music",
-    title: "How Social Discovery Changed Music",
-    excerpt:
-      "From word-of-mouth to algorithmic feeds—exploring how we find new music in the age of social platforms.",
-    content: "Placeholder content for social discovery article.",
-    publishedAt: "2026-04-22",
-    author: "Tunedrop Team",
-    readTime: 8,
-    tags: ["Discovery", "Social", "Industry"],
-  },
-  {
-    slug: "interview-with-indie-artist-mira",
-    title: "Interview with Indie Artist Mira",
-    excerpt:
-      "We sat down with Mira to talk about her creative process, favorite production tools, and the playlists that inspire her sound.",
-    content: "Placeholder content for Mira interview.",
-    publishedAt: "2026-05-01",
-    author: "Tunedrop Team",
-    readTime: 10,
-    tags: ["Interview", "Indie", "Artist"],
-  },
-];
+const dateFormat: Intl.DateTimeFormatOptions = {
+  year: "numeric",
+  month: "short",
+  day: "numeric",
+};
 
-export function getAllArticles(): Article[] {
-  return articles;
+function fmtDate(iso: string) {
+  return new Date(iso).toLocaleDateString("en-US", dateFormat);
 }
 
-export function getArticleBySlug(slug: string): Article | undefined {
-  return articles.find((a) => a.slug === slug);
+const API_BASE = process.env.NEXT_PUBLIC_API_BASE ?? "/api";
+
+async function fetchJSON<T>(path: string): Promise<T | null> {
+  try {
+    const res = await fetch(`${API_BASE}${path}`, { next: { revalidate: 300 } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return data as T;
+  } catch {
+    return null;
+  }
+}
+
+function hydrate(article: Article): Article {
+  return { ...article, formattedDate: fmtDate(article.publishedAt) };
+}
+
+export async function getAllArticles(): Promise<Article[]> {
+  const articles = await fetchJSON<Article[]>("/articles");
+  if (!articles) return [];
+  return articles.map(hydrate);
+}
+
+export async function getArticleBySlug(slug: string): Promise<Article | null> {
+  const article = await fetchJSON<Article>(`/articles/${slug}`);
+  if (!article) return null;
+  return hydrate(article);
 }
