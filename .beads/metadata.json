@@ -1,0 +1,7 @@
+{
+  "database": "dolt",
+  "backend": "dolt",
+  "dolt_mode": "embedded",
+  "dolt_database": "tunedrop_placeholder",
+  "project_id": "29827585-6f90-4564-bae4-bad7b6f44120"
+}
